@@ -13,7 +13,7 @@ typedef struct {
 // 생성 함수
 HeapType* create()
 {
-	return (HeapType*)malloc(sizeof(HeapType));
+	return (HeapType*)malloc(sizeof(HeapType)); // 동적 할당
 }
 // 초기화 함수
 void init(HeapType* h)
@@ -39,23 +39,24 @@ void insert_max_heap(HeapType* h, element item) {
 	/* item의 key 값이 제일 작은 경우는 바로 이쪽으로 옵니다. */
 	h->heap[i] = item; // 부모 노드에 새로운 노드 삽입
 }
-// 삭제 함수
-element delete_max_heap(HeapType* h)
-{
+
+element delete_max_heap(HeapType* h) {
 	int parent, child;
 	element item, temp;
 
-	item = h->heap[1];
-	temp = h->heap[(h->heap_size)--];
 	parent = 1;
 	child = 2;
+	item = h->heap[1]; // 루트 노드
+	temp = h->heap[(h->heap_size)--]; // 말단 노드
+
 	while (child <= h->heap_size) {
-		// 현재 노드의 자식노드 중 더 작은 자식노드를 찾는다.
+		/* 왼쪽 자식 노드와 오른쪽 자식 노드 중 더 큰 값을 찾아서 부모 노드와 비교*/
 		if ((child < h->heap_size) &&
-			(h->heap[child].key) < h->heap[child + 1].key)
-			child++;
-		if (temp.key >= h->heap[child].key) break;
-		// 한 단계 아래로 이동
+			h->heap[child].key<h->heap[child+1].key) 
+			child++; // 오른쪽 자식 노드의 인덱스
+
+		if (h->heap[child].key <= temp.key) break;
+		
 		h->heap[parent] = h->heap[child];
 		parent = child;
 		child *= 2;
